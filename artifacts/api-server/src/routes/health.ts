@@ -1,9 +1,9 @@
-import { Router, type RequestHandler } from "express";
+import { Router, type Request, type Response } from "express";
 import { HealthCheckResponse } from "@workspace/api-zod";
 
 const router = Router();
 
-const healthHandler: RequestHandler = (_req, res) => {
+const healthHandler = (_req: Request, res: Response) => {
   const data = HealthCheckResponse.parse({ status: "ok" });
   res.json(data);
 };

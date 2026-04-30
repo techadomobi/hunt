@@ -1,0 +1,157 @@
+uploads = []
+
+[[generated]]
+id = "CR7FX0oYzG5nluW9vpvRC"
+uri = "file://attached_assets/generated_images/generated_image_0.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "9FcRDc-4MF84ZG1-a0E1h"
+uri = "file://attached_assets/generated_images/generated_image_1.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "Cr4Hf1rGoAf4ayMoxxqC8"
+uri = "file://attached_assets/generated_images/generated_image_2.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "ntDMVYcvxlTSva797Jpno"
+uri = "file://attached_assets/generated_images/generated_image_3.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "GH_vDqdOvOJUxrADINAJJ"
+uri = "file://attached_assets/generated_images/generated_image_4.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "MnxXF20pBrbWyACwqwlKK"
+uri = "file://attached_assets/generated_images/generated_image_5.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "olYMBowxfbLIXaVQYrapj"
+uri = "file://attached_assets/generated_images/generated_image_6.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "1szy9fnz3Vksc7VxkE6gj"
+uri = "file://attached_assets/generated_images/generated_image_7.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "cTeRb6pWFgbFVHK_gSLWY"
+uri = "file://attached_assets/generated_images/generated_image_8.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "JfgrPuvXRgCLyziOu9M94"
+uri = "file://attached_assets/generated_images/generated_image_9.png"
+type = "image"
+title = "generated_image"
+
+[[outputs]]
+id = "4X26ukVBtk4r_hHhm0nEk"
+uri = "file://attached_assets/stock_images/slot_icon.jpg"
+type = "image"
+title = "glowing slot machine reel close-up neon vibrant"
+
+[[outputs]]
+id = "sokFPOjKBhUNiNQ4loi9U"
+uri = "file://attached_assets/stock_images/jungle_theme.jpg"
+type = "image"
+title = "lush jungle adventure tropical leaves vibrant colors"
+
+[[outputs]]
+id = "pmK5erirrQMEEQ6Lxk2ae"
+uri = "file://attached_assets/stock_images/dragon_theme.jpg"
+type = "image"
+title = "fantasy red dragon castle medieval epic"
+
+[[outputs]]
+id = "5YAVUg9fNQoBmbibT-jgu"
+uri = "file://attached_assets/stock_images/egypt_theme.jpg"
+type = "image"
+title = "ancient egyptian pyramid pharaoh sphinx hieroglyph golden"
+
+[[outputs]]
+id = "KaF-Cd2NzMHRkNK8m9Rjw"
+uri = "file://attached_assets/stock_images/fruit_slot.jpg"
+type = "image"
+title = "cherry diamond fruit slot retro arcade colorful"
+
+[[outputs]]
+id = "MPs6KqrGpobgWLvIuD8eW"
+uri = "file://attached_assets/stock_images/mariachi_theme.jpg"
+type = "image"
+title = "day of the dead mexican mariachi colorful skull"
+
+[[outputs]]
+id = "b0_pWYIqfyFHvo92m2rLI"
+uri = "file://attached_assets/stock_images/space_theme.jpg"
+type = "image"
+title = "futuristic space planets neon pink blue galaxy"
+
+[[outputs]]
+id = "LiWVabva4IoA46TqWYKBE"
+uri = "file://attached_assets/stock_images/viking_theme.jpg"
+type = "image"
+title = "viking norse longship snowy mountains icy blue"
+
+[[outputs]]
+id = "8DIwy9r086-LG89nqje3e"
+uri = "file://attached_assets/stock_images/candy_theme.jpg"
+type = "image"
+title = "colorful candy lollipops pink turquoise sweet treats"
+
+[[outputs]]
+id = "dNUAibnUCY9gwuLbrBDyb"
+uri = "file://attached_assets/stock_images/cowboy_theme.jpg"
+type = "image"
+title = "wild west cowboy desert sunset revolver dusty"
+
+[[outputs]]
+id = "OBT_dr9CkQjYqs4Q3qVNL"
+uri = "file://attached_assets/stock_images/ocean_theme.jpg"
+type = "image"
+title = "deep sea underwater treasure mermaid sunken ship"
+
+[[outputs]]
+id = "h_JLj3GwnWITePVSGl2iJ"
+uri = "file://attached_assets/stock_images/news_slots.jpg"
+type = "image"
+title = "casino slot machines glowing in dark night neon"
+
+[[outputs]]
+id = "38ttXHpQTSmWivSazFDBL"
+uri = "file://attached_assets/stock_images/news_chips.jpg"
+type = "image"
+title = "stacked poker chips and playing cards dramatic dark moody"
+
+[[outputs]]
+id = "JXg5LCpcMYEquCbY8zf5U"
+uri = "file://attached_assets/stock_images/news_cash.jpg"
+type = "image"
+title = "hand holding cash dollars money dramatic dark"
+
+[[outputs]]
+id = "LQRF68FDFS-BG8X_PJOYj"
+uri = "file://attached_assets/stock_images/news_roulette.jpg"
+type = "image"
+title = "roulette wheel spinning casino mood lighting"
+
+[[outputs]]
+id = "p_wJ4ZnGryBJuzIPYP6tJ"
+uri = "file://attached_assets/stock_images/feature_mobile.jpg"
+type = "image"
+title = "modern smartphone mockup app interface clean minimal"

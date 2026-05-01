@@ -1,34 +1,46 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Search, ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart } from "lucide-react";
+import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart, Star } from "lucide-react";
 import heroBg from "@assets/stock_images/hero_casino.jpg";
 import slotIcon from "@assets/stock_images/slot_icon.jpg";
 import featureMobile from "@assets/stock_images/feature_mobile.jpg";
-import { games, providers, casinos, articles } from "@/lib/data";
-import { GameCard } from "@/components/GameCard";
+import { casinos, articles } from "@/lib/data";
 import { ProviderMarquee } from "@/components/Marquee";
 import { SectionTitle } from "@/components/SectionTitle";
 import { CountUp } from "@/components/CountUp";
+import generated0 from "@assets/generated_images/generated_image_0.png";
+import generated1 from "@assets/generated_images/generated_image_1.png";
+import generated2 from "@assets/generated_images/generated_image_2.png";
+import generated3 from "@assets/generated_images/generated_image_3.png";
+import generated4 from "@assets/generated_images/generated_image_4.png";
+import generated5 from "@assets/generated_images/generated_image_5.png";
+import generated6 from "@assets/generated_images/generated_image_6.png";
+import generated7 from "@assets/generated_images/generated_image_7.png";
+
+const casinoTiles = [
+  { name: "Stars Casino", image: generated0, offer: "Stars Casino: Get $100 bonus cash + 200 bonus spins" },
+  { name: "Ocean Casino", image: generated1, offer: "Ocean Casino: 200% match bonus up to $500 + 20 bonus spins" },
+  { name: "Spades Casino", image: generated2, offer: "1 Free Spin credited for every $1 deposit. Up to $100 + 100 Spins" },
+  { name: "Monte Casino", image: generated3, offer: "Monte Casino: Get 10 no deposit spins + $100 Bonus" },
+  { name: "Diamond Casino", image: generated4, offer: "Diamond Casino: 150% welcome package + 50 free spins" },
+  { name: "Pharaoh Casino", image: generated5, offer: "Pharaoh Casino: 100% first deposit boost + 75 spins" },
+  { name: "Space Casino", image: generated6, offer: "Space Casino: Weekly cashback + 120 free spins for new players" },
+  { name: "Win Casino", image: generated7, offer: "Win Casino: 50 risk-free spins and instant payout support" },
+];
+
+function CasinoRating() {
+  return (
+    <div className="flex items-center justify-center gap-1 text-[#f6c531]">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Star key={i} className="size-4 fill-current" />
+      ))}
+      <Star className="size-4" />
+    </div>
+  );
+}
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-  const [provider, setProvider] = useState("All Providers");
-  const [sort, setSort] = useState("Newest to oldest");
-  const [visible, setVisible] = useState(8);
-
-  const filtered = useMemo(() => {
-    let list = games.filter((g) => {
-      const matchesQuery = g.title.toLowerCase().includes(query.toLowerCase());
-      const matchesProvider = provider === "All Providers" || g.provider === provider;
-      return matchesQuery && matchesProvider;
-    });
-    if (sort === "Newest to oldest") list = [...list].sort((a, b) => b.releaseYear - a.releaseYear);
-    if (sort === "Highest RTP") list = [...list].sort((a, b) => b.rtp - a.rtp);
-    if (sort === "A-Z") list = [...list].sort((a, b) => a.title.localeCompare(b.title));
-    return list;
-  }, [query, provider, sort]);
-
   return (
     <>
       {/* HERO */}
@@ -104,61 +116,58 @@ export default function Home() {
           transition={{ duration: .5, delay: .2 }}
           className="mt-4 text-center text-white/70 max-w-2xl mx-auto px-4"
         >
-          Hand-picked by our editorial team. Spin them all for free GÇö no sign-up required.
+          Hand-picked by our editorial team. Spin them all for free Gï¿½ï¿½ no sign-up required.
         </motion.p>
       </section>
 
       {/* SEARCH / FILTER + GAMES */}
-      <section className="bg-white py-16">
+      <section className="bg-[#eef1f5] py-10 md:py-12">
         <div className="container-mx">
-          <div className="grid md:grid-cols-3 gap-4 mb-10">
-            <div className="relative">
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search Slots"
-                className="w-full pl-4 pr-10 py-3 border border-border rounded-md outline-none focus:border-mercury-red transition"
-              />
-              <Search className="absolute right-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-            </div>
-            <select
-              value={provider}
-              onChange={(e) => setProvider(e.target.value)}
-              className="w-full px-4 py-3 border border-border rounded-md outline-none focus:border-mercury-red bg-white transition"
-            >
-              {providers.map((p) => <option key={p}>{p}</option>)}
-            </select>
-            <div className="flex items-center gap-3">
-              <span className="text-sm text-muted-foreground whitespace-nowrap">Sort by:</span>
-              <select
-                value={sort}
-                onChange={(e) => setSort(e.target.value)}
-                className="flex-1 px-4 py-3 border border-border rounded-md outline-none focus:border-mercury-red bg-white"
+          <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            {casinoTiles.map((tile, index) => (
+              <motion.article
+                key={tile.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-70px" }}
+                transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.35) }}
+                className="overflow-hidden rounded-md border border-[#d7dbe2] bg-white shadow-sm"
               >
-                <option>Newest to oldest</option>
-                <option>Highest RTP</option>
-                <option>A-Z</option>
-              </select>
-            </div>
-          </div>
+                <div className="aspect-[16/11] overflow-hidden border-b border-[#d7dbe2]">
+                  <img
+                    src={tile.image}
+                    alt={tile.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="px-7 py-6 text-center">
+                  <h3 className="font-display text-[2.15rem] leading-[0.95] font-black tracking-tight text-[#17191f] sm:text-[2.25rem]">
+                    {tile.name}
+                  </h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-            {filtered.slice(0, visible).map((g, i) => (
-              <GameCard key={g.id} game={g} index={i} />
+                  <div className="mt-3">
+                    <CasinoRating />
+                  </div>
+
+                  <p className="mx-auto mt-4 max-w-[255px] text-[15px] leading-6 text-[#6b7280]">
+                    {tile.offer}
+                  </p>
+
+                  <button className="mt-6 min-w-[170px] rounded-full bg-[#2f327e] px-10 py-3 text-lg leading-none font-bold text-white transition hover:brightness-110">
+                    Play Now
+                  </button>
+
+                  <a
+                    href="#"
+                    className="mt-3 block text-[15px] text-[#868c96] underline underline-offset-2"
+                  >
+                    T&amp;Cs Apply
+                  </a>
+                </div>
+              </motion.article>
             ))}
           </div>
-
-          {visible < filtered.length && (
-            <div className="mt-10 flex justify-center">
-              <button
-                onClick={() => setVisible((v) => v + 8)}
-                className="px-8 py-3 border-2 border-foreground/90 text-foreground rounded-md font-bold uppercase tracking-wider text-sm hover:bg-foreground hover:text-white transition"
-              >
-                Load More
-              </button>
-            </div>
-          )}
         </div>
       </section>
 
@@ -200,7 +209,7 @@ export default function Home() {
           </p>
           <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { i: ShieldCheck, t: "Independently verified", d: "Every casino is reviewed by our editorial team GÇö never paid placements." },
+              { i: ShieldCheck, t: "Independently verified", d: "Every casino is reviewed by our editorial team Gï¿½ï¿½ never paid placements." },
               { i: Gauge, t: "Lightning fast demos", d: "Spin any of the 12,430+ titles instantly. No download. No sign-up." },
               { i: Sparkles, t: "Curated bonus offers", d: "We highlight only bonuses with fair wagering and transparent terms." },
               { i: Smartphone, t: "Mobile-first design", d: "Built for phones first. Crisp on tablets. Beautiful on every desktop." },
@@ -250,7 +259,7 @@ export default function Home() {
               The whole catalogue, in your pocket.
             </h2>
             <p className="mt-5 text-muted-foreground text-lg leading-relaxed">
-              Every demo, every bonus, every casino review GÇö perfectly responsive on any device.
+              Every demo, every bonus, every casino review Gï¿½ï¿½ perfectly responsive on any device.
               Pin Mercury to your home screen and treat it like a native app, complete with offline reading.
             </p>
             <ul className="mt-8 space-y-3 text-foreground">
@@ -328,7 +337,7 @@ export default function Home() {
               { n: "01", t: "Browse", d: "Scroll through 12,430+ demos sorted by provider, RTP, theme or volatility." },
               { n: "02", t: "Spin for free", d: "Try any title without registering, depositing, or downloading anything." },
               { n: "03", t: "Compare", d: "Read editorial reviews and player ratings of every reviewed casino." },
-              { n: "04", t: "Claim", d: "Activate the bonus that suits you GÇö wagering, free spins, or cashback." },
+              { n: "04", t: "Claim", d: "Activate the bonus that suits you Gï¿½ï¿½ wagering, free spins, or cashback." },
             ].map((s, i) => (
               <motion.div
                 key={s.n}
@@ -455,7 +464,7 @@ export default function Home() {
         <div className="container-mx">
           <SectionTitle pre="EXPLORE BY" highlight="THEME" />
           <p className="mt-5 text-center text-muted-foreground max-w-2xl mx-auto">
-            Twelve hand-curated themed collections GÇö pick a vibe, spin the matching reels.
+            Twelve hand-curated themed collections Gï¿½ï¿½ pick a vibe, spin the matching reels.
           </p>
           <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {[
@@ -499,7 +508,7 @@ export default function Home() {
           </p>
           <div className="mt-12 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { t: "RTP", d: "Return to Player. The percentage of total wagered money a slot pays back over the long run GÇö usually 94GÇô97%." },
+              { t: "RTP", d: "Return to Player. The percentage of total wagered money a slot pays back over the long run Gï¿½ï¿½ usually 94Gï¿½ï¿½97%." },
               { t: "Volatility", d: "How chunky the wins are. High volatility = rare but big. Low volatility = frequent but small." },
               { t: "Hit Frequency", d: "The percentage of spins that produce any win at all, however small." },
               { t: "Megaways", d: "A mechanic where the number of symbols per reel changes each spin, creating up to 117,649 ways to win." },
@@ -543,7 +552,7 @@ export default function Home() {
             </h2>
             <p className="mt-5 text-muted-foreground text-lg leading-relaxed">
               Every single casino, bonus and slot featured on Mercury is reviewed by a member of
-              our editorial team GÇö never by an algorithm and never as a paid placement. We accept
+              our editorial team Gï¿½ï¿½ never by an algorithm and never as a paid placement. We accept
               affiliate commissions, but we never let those relationships dictate our verdicts.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-6 text-center">
@@ -602,14 +611,14 @@ export default function Home() {
           <h2 className="font-display font-black italic text-4xl md:text-6xl">Ready to spin?</h2>
           <p className="mt-4 text-white/85 max-w-2xl mx-auto text-lg">
             Join 1.2 million players who use Mercury to discover their next favourite slot.
-            Or, if you're an operator GÇö launch your own portal in under an hour.
+            Or, if you're an operator Gï¿½ï¿½ launch your own portal in under an hour.
           </p>
           <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link href="/casinos" className="px-8 py-3.5 bg-white text-mercury-red rounded-md font-bold uppercase tracking-wider text-sm shadow-lg hover:bg-white/90 transition">
               Find your casino
             </Link>
             <Link href="/buy" className="px-8 py-3.5 bg-mercury-purple text-white rounded-md font-bold uppercase tracking-wider text-sm shadow-lg hover:brightness-110 transition">
-              Buy Mercury GÇö $59
+              Buy Mercury Gï¿½ï¿½ $59
             </Link>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-x-8 gap-y-3 text-white/80 text-sm">

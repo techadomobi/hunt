@@ -19,32 +19,30 @@ export function Header() {
   const [location] = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 bg-mercury-red text-white border-b border-white/20">
-      <div className="container-mx flex items-center justify-between h-[72px] lg:h-[76px]">
+    <header className="sticky top-0 z-50 bg-mercury-red text-white shadow-md">
+      <div className="container-mx flex items-center justify-between h-20">
         <Link href="/" className="flex items-center gap-2 group">
           <motion.span
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="font-display text-[2.45rem] leading-none font-black tracking-tight italic"
+            transition={{ duration: .4 }}
+            className="font-display text-3xl font-black tracking-tight italic"
           >
             mercury
           </motion.span>
         </Link>
 
-        <div className="hidden lg:block h-8 w-px bg-white/20" />
-
-        <nav className="hidden lg:flex items-center gap-0.5 text-[15px] font-medium leading-none">
+        <nav className="hidden lg:flex items-center gap-1 text-[15px] font-medium">
           {NAV.map((item) => {
             const active = location === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-3 py-2 transition-colors hover:text-white/80 ${active ? "text-white" : "text-white/95"}`}
+                className={`relative px-4 py-2 transition-colors hover:text-white/80 ${active ? "text-white" : "text-white/95"}`}
               >
                 {item.badge && (
-                  <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-white text-mercury-red">
+                  <span className="absolute -top-1 left-1/2 -translate-x-1/2 text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-white text-mercury-red">
                     {item.badge}
                   </span>
                 )}
@@ -52,7 +50,7 @@ export function Header() {
                 {active && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute left-3 right-3 -bottom-[7px] h-[2px] bg-white rounded-full"
+                    className="absolute left-3 right-3 -bottom-1 h-[2px] bg-white rounded-full"
                   />
                 )}
               </Link>
@@ -60,13 +58,13 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-2 lg:pl-2">
+        <div className="flex items-center gap-2">
           <button
             aria-label="Search"
             onClick={() => setSearchOpen(true)}
             className="p-2 rounded-full hover:bg-white/15 transition-colors"
           >
-            <Search className="size-6" />
+            <Search className="size-5" />
           </button>
           <button
             aria-label="Menu"
@@ -131,7 +129,7 @@ export function Header() {
                 <input
                   autoFocus
                   type="search"
-                  placeholder="Search 12,430+ slots, casinos, news…"
+                  placeholder="Search 12,430+ slots, casinos, newsGǪ"
                   className="flex-1 outline-none text-foreground placeholder:text-muted-foreground"
                 />
                 <button onClick={() => setSearchOpen(false)} className="p-1 rounded hover:bg-muted">

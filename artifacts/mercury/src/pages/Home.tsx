@@ -148,87 +148,121 @@ export default function Home() {
       </section>
 
       {/* SEARCH / FILTER + GAMES */}
-      <section className="bg-[#eef1f5] py-10 md:py-12">
+      <section className="bg-[#f0f2f5] py-12 md:py-16">
         <div className="container-mx">
-          {offersError && (
-            <p className="mx-auto mb-4 max-w-[1120px] text-center text-sm text-[#8a3344]">{offersError}</p>
-          )}
-
-          {isOffersLoading ? (
-            <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <div
-                  key={index}
-                  className="h-[360px] animate-pulse rounded-[12px] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {offers.map((offer, index) => {
-                const starsCount = Math.max(1, Math.min(5, Math.round(offer.rating ?? 4)));
-                const stars = "⭐".repeat(starsCount);
-                const description = [offer.description1, offer.description2].filter(Boolean).join("\n");
-                const cardKey = `${offer.offerName ?? "offer"}-${index}`;
-                const imageIsBroken = brokenImages[cardKey] || !offer.image;
-                const cardLink = index === 1 ? "https://creditmoney.in/" : (offer.trackingLink || "#");
-
-                return (
-              <motion.article
-                key={cardKey}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-70px" }}
-                transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.35) }}
-                className="overflow-hidden rounded-[12px] bg-white text-center shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+          <div className="mx-auto max-w-300">
+            {/* Retrieval Status */}
+            {isOffersLoading && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4 }}
+                className="mb-8 rounded-lg bg-white p-4 shadow-sm text-center"
               >
-                <div
-                  className="flex h-[140px] items-center justify-center"
-                  style={{ backgroundColor: offerHeaderColors[index % offerHeaderColors.length] }}
-                >
-                  {imageIsBroken ? (
-                    <span className="rounded-md bg-white/95 px-4 py-2 text-sm font-semibold text-[#1f2937] shadow-sm">
-                      File not found
-                    </span>
-                  ) : (
-                    <img
-                      src={offer.image || generated0}
-                      alt={offer.offerName || "Casino offer"}
-                      loading="lazy"
-                      className="w-20"
-                      onError={() => setBrokenImages((current) => ({ ...current, [cardKey]: true }))}
-                    />
-                  )}
+                <div className="flex items-center justify-center gap-2">
+                  <div className="size-2 rounded-full bg-[#2d2f6e] animate-pulse" />
+                  <span className="text-sm font-medium text-[#666]">Retrieving live offers...</span>
                 </div>
-                <div className="p-5">
-                  <h3 className="text-[20px] font-bold text-[#17191f]">{offer.offerName || "Featured Offer"}</h3>
+              </motion.div>
+            )}
 
-                  <div className="mt-2 text-[20px] text-[#f4c430]">{stars}</div>
+            {offersError && (
+              <p className="mb-6 text-center text-sm text-[#8a3344]">{offersError}</p>
+            )}
 
-                  <p className="mt-2 whitespace-pre-line text-sm text-[#666]">
-                    {description || "Exclusive deal for new players."}
-                  </p>
-
-                  <a
-                    href={cardLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-4 inline-block rounded-full bg-[#2d2f6e] px-5 py-3 text-white no-underline transition hover:brightness-110"
+            {/* Loading Skeletons */}
+            {isOffersLoading && (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="overflow-hidden rounded-lg bg-white shadow-sm animate-pulse"
                   >
-                    {offer.buttonName || "Play Now"}
-                  </a>
+                    <div className="aspect-video bg-gray-200" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-6 bg-gray-200 rounded w-3/4" />
+                      <div className="h-4 bg-gray-200 rounded w-1/2" />
+                      <div className="h-10 bg-gray-200 rounded-full w-full mt-4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
-                  <span className="mt-3 block text-xs text-[#888]">T&amp;Cs Apply</span>
-                </div>
-              </motion.article>
-                );
-              })}
-            </div>
-          )}
+            {/* Actual Offers Grid */}
+            {!isOffersLoading && (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {offers.map((offer, index) => {
+                  const starsCount = Math.max(1, Math.min(5, Math.round(offer.rating ?? 4)));
+                  const stars = "⭐".repeat(starsCount);
+                  const description = [offer.description1, offer.description2].filter(Boolean).join(" ");
+                  const cardKey = `${offer.offerName ?? "offer"}-${index}`;
+                  const imageIsBroken = brokenImages[cardKey] || !offer.image;
+                  const cardLink = index === 1 ? "https://creditmoney.in/" : (offer.trackingLink || "#");
 
-          {!isOffersLoading && offers.length === 0 && !offersError && (
-            <p className="mt-4 text-center text-sm text-[#666]">No offers found from the API.</p>
-          )}
+                  return (
+                    <motion.article
+                      key={cardKey}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-50px" }}
+                      transition={{ duration: 0.35, delay: Math.min(index * 0.08, 0.3) }}
+                      className="overflow-hidden rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <div className="aspect-video overflow-hidden bg-gray-100 flex items-center justify-center">
+                        {imageIsBroken ? (
+                          <span className="text-sm font-semibold text-gray-500">File not found</span>
+                        ) : (
+                          <img
+                            src={offer.image || generated0}
+                            alt={offer.offerName || "Casino offer"}
+                            loading="lazy"
+                            className="w-full h-full object-cover"
+                            onError={() => setBrokenImages((current) => ({ ...current, [cardKey]: true }))}
+                          />
+                        )}
+                      </div>
+                      <div className="p-5 text-center">
+                        <h3 className="text-lg font-bold text-[#1f2937] mb-2">{offer.offerName || "Featured Offer"}</h3>
+
+                        <div className="flex justify-center gap-0.5 mb-3">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <span key={i} className="text-lg">
+                              {i < starsCount ? "⭐" : "☆"}
+                            </span>
+                          ))}
+                        </div>
+
+                        <p className="text-xs text-[#666] mb-4 line-clamp-2 h-8">
+                          {description || "Exclusive casino offer"}
+                        </p>
+
+                        <a
+                          href={cardLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block w-full rounded-full bg-[#2d2f6e] px-4 py-2.5 text-sm font-bold text-white no-underline transition hover:bg-[#1f2138] mb-3"
+                        >
+                          {offer.buttonName || "Play Now"}
+                        </a>
+
+                        <a
+                          href="#"
+                          className="text-xs text-[#999] underline underline-offset-1 hover:text-[#666]"
+                        >
+                          T&Cs Apply
+                        </a>
+                      </div>
+                    </motion.article>
+                  );
+                })}
+              </div>
+            )}
+
+            {!isOffersLoading && offers.length === 0 && !offersError && (
+              <p className="text-center text-sm text-[#666]">No offers found from the API.</p>
+            )}
+          </div>
         </div>
       </section>
 

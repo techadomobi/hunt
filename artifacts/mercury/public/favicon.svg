@@ -1,3 +1,29 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="116" y1="96" x2="396" y2="416" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B0B0B"/>
+      <stop offset="1" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="silver" x1="128" y1="132" x2="284" y2="304" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#DADADA"/>
+      <stop offset="1" stop-color="#9A9A9A"/>
+    </linearGradient>
+    <linearGradient id="red" x1="248" y1="132" x2="404" y2="320" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF5A4D"/>
+      <stop offset="0.6" stop-color="#FF1111"/>
+      <stop offset="1" stop-color="#B50011"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="512" height="512" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000000" flood-opacity="0.48"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <circle cx="256" cy="256" r="132" fill="#101010" stroke="#E21E1E" stroke-width="12"/>
+    <text x="156" y="300" font-family="Arial Black, Arial, sans-serif" font-size="180" font-weight="900" letter-spacing="-10" fill="url(#silver)">G</text>
+    <text x="248" y="300" font-family="Arial Black, Arial, sans-serif" font-size="180" font-weight="900" letter-spacing="-10" fill="url(#red)">H</text>
+    <path d="M168 360H344" stroke="#E21E1E" stroke-width="12" stroke-linecap="round"/>
+    <path d="M256 360L240 376H272L256 360Z" fill="#E21E1E"/>
+  </g>
 </svg>

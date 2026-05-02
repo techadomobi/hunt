@@ -26,9 +26,18 @@ export function Header() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: .4 }}
-            className="font-display text-3xl font-black tracking-tight italic"
+            className="flex items-center"
           >
-            mercury
+            <img
+              src="/favicon.svg"
+              alt="GamezHunt"
+              className="h-10 w-10 rounded-2xl bg-black/10 p-1.5 object-contain ring-1 ring-white/20 drop-shadow-[0_6px_16px_rgba(0,0,0,0.34)] sm:hidden"
+            />
+            <img
+              src="/logo.svg"
+              alt="GamezHunt"
+              className="hidden h-12 w-auto min-w-55 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.34)] sm:block sm:h-14 sm:min-w-65"
+            />
           </motion.span>
         </Link>
 
@@ -50,7 +59,7 @@ export function Header() {
                 {active && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute left-3 right-3 -bottom-1 h-[2px] bg-white rounded-full"
+                    className="absolute left-3 right-3 -bottom-1 h-0.5 bg-white rounded-full"
                   />
                 )}
               </Link>
@@ -114,7 +123,7 @@ export function Header() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-start justify-center pt-32 px-4"
+            className="fixed inset-0 z-60 bg-black/70 backdrop-blur-sm flex items-start justify-center pt-32 px-4"
             onClick={() => setSearchOpen(false)}
           >
             <motion.div

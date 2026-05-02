@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -11,6 +12,7 @@ import SlotsNews from "@/pages/SlotsNews";
 import GamblingNews from "@/pages/GamblingNews";
 import BuyMercury from "@/pages/BuyMercury";
 import NotFound from "@/pages/not-found";
+import favicon from "@/assets/favicon.png";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +34,29 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    const href = favicon;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+
+    link.type = "image/png";
+    link.href = href;
+
+    let shortcut = document.querySelector<HTMLLinkElement>("link[rel='shortcut icon']");
+    if (!shortcut) {
+      shortcut = document.createElement("link");
+      shortcut.rel = "shortcut icon";
+      document.head.appendChild(shortcut);
+    }
+    shortcut.type = "image/png";
+    shortcut.href = href;
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

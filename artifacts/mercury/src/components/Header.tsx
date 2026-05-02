@@ -32,7 +32,7 @@ export function Header() {
             <img
               src={logo}
               alt="GamezHunt"
-              className="h-11 w-auto min-w-48 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.34)] sm:h-14 sm:min-w-60"
+              className="h-16 w-auto max-w-xs object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.34)] sm:h-20 sm:max-w-md"
             />
           </motion.span>
         </Link>

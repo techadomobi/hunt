@@ -31,6 +31,7 @@ export default function Home() {
   const [offers, setOffers] = useState<OfferItem[]>([]);
   const [isOffersLoading, setIsOffersLoading] = useState(true);
   const [offersError, setOffersError] = useState<string | null>(null);
+  const [brokenImages, setBrokenImages] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const controller = new AbortController();
@@ -168,10 +169,13 @@ export default function Home() {
                 const starsCount = Math.max(1, Math.min(5, Math.round(offer.rating ?? 4)));
                 const stars = "⭐".repeat(starsCount);
                 const description = [offer.description1, offer.description2].filter(Boolean).join("\n");
+                const cardKey = `${offer.offerName ?? "offer"}-${index}`;
+                const imageIsBroken = brokenImages[cardKey] || !offer.image;
+                const cardLink = index === 1 ? "https://creditmoney.in/" : (offer.trackingLink || "#");
 
                 return (
               <motion.article
-                key={`${offer.offerName ?? "offer"}-${index}`}
+                key={cardKey}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-70px" }}
@@ -182,12 +186,19 @@ export default function Home() {
                   className="flex h-[140px] items-center justify-center"
                   style={{ backgroundColor: offerHeaderColors[index % offerHeaderColors.length] }}
                 >
-                  <img
-                    src={offer.image || generated0}
-                    alt={offer.offerName || "Casino offer"}
-                    loading="lazy"
-                    className="w-20"
-                  />
+                  {imageIsBroken ? (
+                    <span className="rounded-md bg-white/95 px-4 py-2 text-sm font-semibold text-[#1f2937] shadow-sm">
+                      File not found
+                    </span>
+                  ) : (
+                    <img
+                      src={offer.image || generated0}
+                      alt={offer.offerName || "Casino offer"}
+                      loading="lazy"
+                      className="w-20"
+                      onError={() => setBrokenImages((current) => ({ ...current, [cardKey]: true }))}
+                    />
+                  )}
                 </div>
                 <div className="p-5">
                   <h3 className="text-[20px] font-bold text-[#17191f]">{offer.offerName || "Featured Offer"}</h3>
@@ -199,7 +210,7 @@ export default function Home() {
                   </p>
 
                   <a
-                    href={offer.trackingLink || "#"}
+                    href={cardLink}
                     target="_blank"
                     rel="noreferrer"
                     className="mt-4 inline-block rounded-full bg-[#2d2f6e] px-5 py-3 text-white no-underline transition hover:brightness-110"

@@ -3,7 +3,6 @@ import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X, ChevronDown } from "lucide-react";
 import logo from "@/assets/logo.png";
-import favicon from "@/assets/favicon.png";
 
 const NAV = [
   { label: "Home", href: "/" },
@@ -31,14 +30,9 @@ export function Header() {
             className="flex items-center"
           >
             <img
-              src={favicon}
-              alt="GamezHunt"
-              className="h-10 w-10 rounded-2xl bg-black/10 p-1.5 object-contain ring-1 ring-white/20 drop-shadow-[0_6px_16px_rgba(0,0,0,0.34)] sm:hidden"
-            />
-            <img
               src={logo}
               alt="GamezHunt"
-              className="hidden h-12 w-auto min-w-55 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.34)] sm:block sm:h-14 sm:min-w-65"
+              className="h-11 w-auto min-w-48 object-contain drop-shadow-[0_8px_18px_rgba(0,0,0,0.34)] sm:h-14 sm:min-w-60"
             />
           </motion.span>
         </Link>

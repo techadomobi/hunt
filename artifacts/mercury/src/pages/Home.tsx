@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart, X, ExternalLink } from "lucide-react";
+import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart, X, ExternalLink, Star } from "lucide-react";
 import heroBg from "@assets/stock_images/hero_casino.jpg";
 import slotIcon from "@assets/stock_images/slot_icon.jpg";
 import featureMobile from "@assets/stock_images/feature_mobile.jpg";
@@ -12,13 +12,35 @@ import { CountUp } from "@/components/CountUp";
 import generated0 from "@assets/generated_images/generated_image_0.png";
 
 type OfferItem = {
+  _id?: string;
   offerName?: string;
   image?: string;
   rating?: number;
   description1?: string;
   description2?: string;
+  description3?: string;
+  geo?: string;
+  rewardAmount?: string | number;
+  categoryName?: string;
+  CreateDate?: string;
+  expierdDate?: string;
+  slug?: string;
+  seoTitle?: string;
+  metaDescription?: string;
+  focusKeyphrase?: string;
+  userType?: string;
+  status?: string;
+  offerId?: number;
   trackingLink?: string;
   buttonName?: string;
+  t1?: string;
+  t2?: string;
+  t3?: string;
+  t4?: string;
+  t5?: string;
+  t6?: string;
+  t7?: string;
+  t8?: string;
 };
 
 type OfferApiResponse = {
@@ -26,6 +48,47 @@ type OfferApiResponse = {
 };
 
 const offerHeaderColors = ["#2e8b57", "#ff5733", "#6a0dad", "#1565c0"];
+const offerUrlOverrides: Record<string, string> = {
+  "shubham test": "https://creditmoney.in/",
+  "fair go casino": "https://click.adomobi.net/tracking/click?m=6&o=41&a=10",
+  testnew: "https://click.creditsdeal.com/",
+  "new admin test": "https://creditsdeal.com/",
+};
+
+function normalizeOfferKey(value: string | undefined) {
+  return value?.trim().toLowerCase() ?? "";
+}
+
+function getOfferActionUrl(offer: OfferItem) {
+  const override = offerUrlOverrides[normalizeOfferKey(offer.offerName)];
+
+  if (override) {
+    return override;
+  }
+
+  const trackingLink = offer.trackingLink?.trim();
+  if (trackingLink && /^https?:\/\//i.test(trackingLink)) {
+    return trackingLink;
+  }
+
+  return "#";
+}
+
+function getOfferDetails(offer: OfferItem) {
+  return [
+    offer.description1,
+    offer.description2,
+    offer.description3,
+    offer.t1,
+    offer.t2,
+    offer.t3,
+    offer.t4,
+    offer.t5,
+    offer.t6,
+    offer.t7,
+    offer.t8,
+  ].filter(Boolean) as string[];
+}
 
 export default function Home() {
   const [offers, setOffers] = useState<OfferItem[]>([]);
@@ -210,11 +273,10 @@ export default function Home() {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {offers.map((offer, index) => {
                   const starsCount = Math.max(1, Math.min(5, Math.round(offer.rating ?? 4)));
-                  const stars = "⭐".repeat(starsCount);
                   const description = [offer.description1, offer.description2].filter(Boolean).join(" ");
                   const cardKey = `${offer.offerName ?? "offer"}-${index}`;
                   const imageIsBroken = brokenImages[cardKey] || !offer.image;
-                  const cardLink = index === 1 ? "https://creditmoney.in/" : (offer.trackingLink || "#");
+                  const cardLink = getOfferActionUrl(offer);
 
                   return (
                     <motion.article
@@ -223,9 +285,9 @@ export default function Home() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-50px" }}
                       transition={{ duration: 0.35, delay: Math.min(index * 0.08, 0.3) }}
-                      className="overflow-hidden rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                      className="overflow-hidden rounded-md border border-[#d7dbe2] bg-white shadow-sm transition-shadow hover:shadow-md"
                     >
-                      <div className="aspect-video overflow-hidden bg-gray-100 flex items-center justify-center">
+                      <div className="aspect-16/11 overflow-hidden border-b border-[#d7dbe2] bg-gray-100 flex items-center justify-center">
                         {imageIsBroken ? (
                           <span className="text-sm font-semibold text-gray-500">File not found</span>
                         ) : (
@@ -238,35 +300,43 @@ export default function Home() {
                           />
                         )}
                       </div>
-                      <div className="p-5 text-center">
-                        <h3 className="text-lg font-bold text-[#1f2937] mb-2">{offer.offerName || "Featured Offer"}</h3>
+                      <div className="px-7 py-6 text-center">
+                        <h3 className="font-display text-[2.15rem] leading-[0.95] font-black tracking-tight text-[#17191f] sm:text-[2.25rem]">
+                          {offer.offerName || "Featured Offer"}
+                        </h3>
 
-                        <div className="flex justify-center gap-0.5 mb-3">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <span key={i} className="text-lg">
-                              {i < starsCount ? "⭐" : "☆"}
-                            </span>
-                          ))}
+                        <div className="mt-3">
+                          <div className="flex items-center justify-center gap-1 text-[#f6c531]">
+                            {Array.from({ length: 5 }).map((_, i) => (
+                              <Star
+                                key={i}
+                                className={`size-4 ${i < starsCount ? "fill-current" : ""}`}
+                                aria-hidden="true"
+                              />
+                            ))}
+                          </div>
                         </div>
 
-                        <p className="text-xs text-[#666] mb-4 line-clamp-2 h-8">
+                        <p className="mx-auto mt-4 max-w-64 text-[15px] leading-6 text-[#6b7280]" style={{ maxWidth: 255 }}>
                           {description || "Exclusive casino offer"}
                         </p>
 
                         <button
                           type="button"
                           onClick={() => setSelectedOffer({ offer, index })}
-                          className="inline-block w-full rounded-full bg-[#2d2f6e] px-4 py-2.5 text-sm font-bold text-white no-underline transition hover:bg-[#1f2138] mb-3"
+                          className="mt-6 rounded-full bg-[#2f327e] px-10 py-3 text-lg leading-none font-bold text-white transition hover:brightness-110"
+                          style={{ minWidth: 170 }}
                         >
                           {offer.buttonName || "Play Now"}
                         </button>
 
-                        <a
-                          href="#"
-                          className="text-xs text-[#999] underline underline-offset-1 hover:text-[#666]"
+                        <button
+                          type="button"
+                          onClick={() => setSelectedOffer({ offer, index })}
+                          className="mt-3 block w-full text-[15px] text-[#868c96] underline underline-offset-2 hover:text-[#666]"
                         >
                           T&Cs Apply
-                        </a>
+                        </button>
                       </div>
                     </motion.article>
                   );
@@ -338,8 +408,42 @@ export default function Home() {
                   {selectedOffer.offer.description2 && <p>{selectedOffer.offer.description2}</p>}
                   <div className="rounded-xl bg-[#f8f9fc] p-4 text-sm text-[#374151]">
                     <div className="font-semibold text-[#111827]">Apply destination</div>
-                    <div className="mt-1 break-all">{selectedOffer.offer.trackingLink || "No tracking link provided."}</div>
+                    <div className="mt-1 break-all">{getOfferActionUrl(selectedOffer.offer)}</div>
                   </div>
+
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {[
+                      ["Reward amount", selectedOffer.offer.rewardAmount],
+                      ["Geo", selectedOffer.offer.geo],
+                      ["Category", selectedOffer.offer.categoryName],
+                      ["Status", selectedOffer.offer.status],
+                      ["Created", selectedOffer.offer.CreateDate],
+                      ["Expires", selectedOffer.offer.expierdDate],
+                      ["Offer ID", selectedOffer.offer.offerId],
+                      ["Slug", selectedOffer.offer.slug],
+                    ].map(([label, value]) =>
+                      value ? (
+                        <div key={label} className="rounded-xl border border-[#e5e7eb] bg-white p-3">
+                          <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6b7280]">{label}</div>
+                          <div className="mt-1 text-sm font-medium text-[#111827]">{String(value)}</div>
+                        </div>
+                      ) : null,
+                    )}
+                  </div>
+
+                  {getOfferDetails(selectedOffer.offer).length > 0 && (
+                    <div className="rounded-xl border border-[#e5e7eb] bg-white p-4">
+                      <div className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#6b7280]">Full description</div>
+                      <ul className="mt-3 space-y-2 text-sm leading-6 text-[#4b5563]">
+                        {getOfferDetails(selectedOffer.offer).map((line, lineIndex) => (
+                          <li key={`${lineIndex}-${line}`} className="flex gap-2">
+                            <span className="mt-1.5 size-2 rounded-full bg-[#2d2f6e] shrink-0" />
+                            <span>{line}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -351,7 +455,7 @@ export default function Home() {
                     Close
                   </button>
                   <a
-                    href={selectedOffer.index === 1 ? "https://creditmoney.in/" : (selectedOffer.offer.trackingLink || "#")}
+                    href={getOfferActionUrl(selectedOffer.offer)}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2d2f6e] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1f2138]"

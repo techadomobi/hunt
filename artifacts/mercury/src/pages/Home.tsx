@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart } from "lucide-react";
+import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart, X, ExternalLink } from "lucide-react";
 import heroBg from "@assets/stock_images/hero_casino.jpg";
 import slotIcon from "@assets/stock_images/slot_icon.jpg";
 import featureMobile from "@assets/stock_images/feature_mobile.jpg";
@@ -32,6 +32,7 @@ export default function Home() {
   const [isOffersLoading, setIsOffersLoading] = useState(true);
   const [offersError, setOffersError] = useState<string | null>(null);
   const [brokenImages, setBrokenImages] = useState<Record<string, boolean>>({});
+  const [selectedOffer, setSelectedOffer] = useState<{ offer: OfferItem; index: number } | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -67,6 +68,21 @@ export default function Home() {
       controller.abort();
     };
   }, []);
+
+  useEffect(() => {
+    if (!selectedOffer) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedOffer(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedOffer]);
+
+  const closeOfferDetails = () => setSelectedOffer(null);
 
   return (
     <>
@@ -237,14 +253,13 @@ export default function Home() {
                           {description || "Exclusive casino offer"}
                         </p>
 
-                        <a
-                          href={cardLink}
-                          target="_blank"
-                          rel="noreferrer"
+                        <button
+                          type="button"
+                          onClick={() => setSelectedOffer({ offer, index })}
                           className="inline-block w-full rounded-full bg-[#2d2f6e] px-4 py-2.5 text-sm font-bold text-white no-underline transition hover:bg-[#1f2138] mb-3"
                         >
                           {offer.buttonName || "Play Now"}
-                        </a>
+                        </button>
 
                         <a
                           href="#"
@@ -265,6 +280,91 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {selectedOffer && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-8"
+          onClick={closeOfferDetails}
+          role="presentation"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.25 }}
+            className="relative w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Offer details"
+          >
+            <button
+              type="button"
+              onClick={closeOfferDetails}
+              className="absolute right-4 top-4 z-10 inline-flex size-10 items-center justify-center rounded-full bg-white/95 text-[#1f2138] shadow-sm transition hover:bg-white"
+              aria-label="Close offer details"
+            >
+              <X className="size-5" />
+            </button>
+
+            <div className="grid gap-0 md:grid-cols-[1.05fr_1fr]">
+              <div className="bg-[#f4f6fb]">
+                <div className="aspect-video overflow-hidden bg-[#edf0f7] flex items-center justify-center">
+                  {brokenImages[`${selectedOffer.offer.offerName ?? "offer"}-${selectedOffer.index}`] || !selectedOffer.offer.image ? (
+                    <span className="text-sm font-semibold text-gray-500">File not found</span>
+                  ) : (
+                    <img
+                      src={selectedOffer.offer.image || generated0}
+                      alt={selectedOffer.offer.offerName || "Casino offer"}
+                      className="h-full w-full object-cover"
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="p-6 md:p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.3em] text-[#2d2f6e]">Live offer details</p>
+                <h3 className="mt-3 text-3xl font-black leading-tight text-[#111827]">
+                  {selectedOffer.offer.offerName || "Featured Offer"}
+                </h3>
+
+                <div className="mt-4 flex items-center gap-1 text-lg">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <span key={i}>{i < Math.max(1, Math.min(5, Math.round(selectedOffer.offer.rating ?? 4))) ? "⭐" : "☆"}</span>
+                  ))}
+                </div>
+
+                <div className="mt-6 space-y-4 text-sm leading-7 text-[#4b5563]">
+                  <p>{selectedOffer.offer.description1 || "No description was returned by the API for this offer."}</p>
+                  {selectedOffer.offer.description2 && <p>{selectedOffer.offer.description2}</p>}
+                  <div className="rounded-xl bg-[#f8f9fc] p-4 text-sm text-[#374151]">
+                    <div className="font-semibold text-[#111827]">Apply destination</div>
+                    <div className="mt-1 break-all">{selectedOffer.offer.trackingLink || "No tracking link provided."}</div>
+                  </div>
+                </div>
+
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    type="button"
+                    onClick={closeOfferDetails}
+                    className="rounded-full border border-[#d1d5db] px-5 py-3 text-sm font-bold text-[#1f2138] transition hover:bg-[#f3f4f6]"
+                  >
+                    Close
+                  </button>
+                  <a
+                    href={selectedOffer.index === 1 ? "https://creditmoney.in/" : (selectedOffer.offer.trackingLink || "#")}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#2d2f6e] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#1f2138]"
+                  >
+                    Apply now
+                    <ExternalLink className="size-4" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* PROVIDER MARQUEE */}
       <ProviderMarquee />

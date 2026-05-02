@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart, Star } from "lucide-react";
+import { ChevronRight, Sparkles, ShieldCheck, Gauge, Headphones, Trophy, Smartphone, Globe, Zap, Users, Heart } from "lucide-react";
 import heroBg from "@assets/stock_images/hero_casino.jpg";
 import slotIcon from "@assets/stock_images/slot_icon.jpg";
 import featureMobile from "@assets/stock_images/feature_mobile.jpg";
@@ -10,37 +10,63 @@ import { ProviderMarquee } from "@/components/Marquee";
 import { SectionTitle } from "@/components/SectionTitle";
 import { CountUp } from "@/components/CountUp";
 import generated0 from "@assets/generated_images/generated_image_0.png";
-import generated1 from "@assets/generated_images/generated_image_1.png";
-import generated2 from "@assets/generated_images/generated_image_2.png";
-import generated3 from "@assets/generated_images/generated_image_3.png";
-import generated4 from "@assets/generated_images/generated_image_4.png";
-import generated5 from "@assets/generated_images/generated_image_5.png";
-import generated6 from "@assets/generated_images/generated_image_6.png";
-import generated7 from "@assets/generated_images/generated_image_7.png";
 
-const casinoTiles = [
-  { name: "Stars Casino", image: generated0, offer: "Stars Casino: Get $100 bonus cash + 200 bonus spins" },
-  { name: "Ocean Casino", image: generated1, offer: "Ocean Casino: 200% match bonus up to $500 + 20 bonus spins" },
-  { name: "Spades Casino", image: generated2, offer: "1 Free Spin credited for every $1 deposit. Up to $100 + 100 Spins" },
-  { name: "Monte Casino", image: generated3, offer: "Monte Casino: Get 10 no deposit spins + $100 Bonus" },
-  { name: "Diamond Casino", image: generated4, offer: "Diamond Casino: 150% welcome package + 50 free spins" },
-  { name: "Pharaoh Casino", image: generated5, offer: "Pharaoh Casino: 100% first deposit boost + 75 spins" },
-  { name: "Space Casino", image: generated6, offer: "Space Casino: Weekly cashback + 120 free spins for new players" },
-  { name: "Win Casino", image: generated7, offer: "Win Casino: 50 risk-free spins and instant payout support" },
-];
+type OfferItem = {
+  offerName?: string;
+  image?: string;
+  rating?: number;
+  description1?: string;
+  description2?: string;
+  trackingLink?: string;
+  buttonName?: string;
+};
 
-function CasinoRating() {
-  return (
-    <div className="flex items-center justify-center gap-1 text-[#f6c531]">
-      {Array.from({ length: 4 }).map((_, i) => (
-        <Star key={i} className="size-4 fill-current" />
-      ))}
-      <Star className="size-4" />
-    </div>
-  );
-}
+type OfferApiResponse = {
+  responseResult?: OfferItem[];
+};
+
+const offerHeaderColors = ["#2e8b57", "#ff5733", "#6a0dad", "#1565c0"];
 
 export default function Home() {
+  const [offers, setOffers] = useState<OfferItem[]>([]);
+  const [isOffersLoading, setIsOffersLoading] = useState(true);
+  const [offersError, setOffersError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadOffers() {
+      try {
+        setIsOffersLoading(true);
+        setOffersError(null);
+
+        const offersEndpoint = `${import.meta.env.BASE_URL}api/offers?categoryId=14`;
+        const response = await fetch(offersEndpoint, {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed with ${response.status}`);
+        }
+
+        const data = (await response.json()) as OfferApiResponse;
+        const result = Array.isArray(data.responseResult) ? data.responseResult : [];
+        setOffers(result);
+      } catch (error) {
+        if ((error as Error).name === "AbortError") return;
+        setOffersError("Unable to load live offers right now.");
+      } finally {
+        setIsOffersLoading(false);
+      }
+    }
+
+    void loadOffers();
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   return (
     <>
       {/* HERO */}
@@ -123,51 +149,75 @@ export default function Home() {
       {/* SEARCH / FILTER + GAMES */}
       <section className="bg-[#eef1f5] py-10 md:py-12">
         <div className="container-mx">
-          <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {casinoTiles.map((tile, index) => (
+          {offersError && (
+            <p className="mx-auto mb-4 max-w-[1120px] text-center text-sm text-[#8a3344]">{offersError}</p>
+          )}
+
+          {isOffersLoading ? (
+            <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="h-[360px] animate-pulse rounded-[12px] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="mx-auto grid max-w-[1120px] grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {offers.map((offer, index) => {
+                const starsCount = Math.max(1, Math.min(5, Math.round(offer.rating ?? 4)));
+                const stars = "⭐".repeat(starsCount);
+                const description = [offer.description1, offer.description2].filter(Boolean).join("\n");
+
+                return (
               <motion.article
-                key={tile.name}
+                key={`${offer.offerName ?? "offer"}-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-70px" }}
                 transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.35) }}
-                className="overflow-hidden rounded-md border border-[#d7dbe2] bg-white shadow-sm"
+                className="overflow-hidden rounded-[12px] bg-white text-center shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
               >
-                <div className="aspect-[16/11] overflow-hidden border-b border-[#d7dbe2]">
+                <div
+                  className="flex h-[140px] items-center justify-center"
+                  style={{ backgroundColor: offerHeaderColors[index % offerHeaderColors.length] }}
+                >
                   <img
-                    src={tile.image}
-                    alt={tile.name}
+                    src={offer.image || generated0}
+                    alt={offer.offerName || "Casino offer"}
                     loading="lazy"
-                    className="h-full w-full object-cover"
+                    className="w-20"
                   />
                 </div>
-                <div className="px-7 py-6 text-center">
-                  <h3 className="font-display text-[2.15rem] leading-[0.95] font-black tracking-tight text-[#17191f] sm:text-[2.25rem]">
-                    {tile.name}
-                  </h3>
+                <div className="p-5">
+                  <h3 className="text-[20px] font-bold text-[#17191f]">{offer.offerName || "Featured Offer"}</h3>
 
-                  <div className="mt-3">
-                    <CasinoRating />
-                  </div>
+                  <div className="mt-2 text-[20px] text-[#f4c430]">{stars}</div>
 
-                  <p className="mx-auto mt-4 max-w-[255px] text-[15px] leading-6 text-[#6b7280]">
-                    {tile.offer}
+                  <p className="mt-2 whitespace-pre-line text-sm text-[#666]">
+                    {description || "Exclusive deal for new players."}
                   </p>
 
-                  <button className="mt-6 min-w-[170px] rounded-full bg-[#2f327e] px-10 py-3 text-lg leading-none font-bold text-white transition hover:brightness-110">
-                    Play Now
-                  </button>
-
                   <a
-                    href="#"
-                    className="mt-3 block text-[15px] text-[#868c96] underline underline-offset-2"
+                    href={offer.trackingLink || "#"}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-block rounded-full bg-[#2d2f6e] px-5 py-3 text-white no-underline transition hover:brightness-110"
                   >
-                    T&amp;Cs Apply
+                    {offer.buttonName || "Play Now"}
                   </a>
+
+                  <span className="mt-3 block text-xs text-[#888]">T&amp;Cs Apply</span>
                 </div>
               </motion.article>
-            ))}
-          </div>
+                );
+              })}
+            </div>
+          )}
+
+          {!isOffersLoading && offers.length === 0 && !offersError && (
+            <p className="mt-4 text-center text-sm text-[#666]">No offers found from the API.</p>
+          )}
         </div>
       </section>
 
